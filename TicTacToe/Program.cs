@@ -1,18 +1,4 @@
-﻿//
-//
-//
-//
-//
-
-//
-//
-//
-//
-
-
-
-
-
+﻿
 void PrintGameBoard(char[] cage)
 {
     Console.Clear();
@@ -68,7 +54,6 @@ void KeyPressed(ConsoleKeyInfo key, char[] cage, char mark)
     }
 }
 
-                  //0   1   2   3   4   5   6   7   8   9  
 char[] gamecage = {' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
 string[] welcome = {"                                  КРЕСТИКИ - НОЛИКИ            _________________",
                     "          Два игрока по очереди ставят крестики или нолики    |     |     |     |",
@@ -83,20 +68,22 @@ string[] welcome = {"                                  КРЕСТИКИ - НОЛ
 bool win = false;
 char tictac = 'X';
 int turn = 0;
-bool wturn = true;
+bool whoseturn = true;
 string tab = "                                                    ";
+
 Console.WriteLine();
 for (int i = 0; i < 10; i++)
     {
       Console.WriteLine(welcome[i]); 
     }
 Console.ReadKey();
+
 PrintGameBoard(gamecage);
 while (!win && turn != 9)
 {
     string boardA = new string(gamecage);
     Console.WriteLine();
-    Console.WriteLine(tab + (wturn ? "  Ходят Крестики!" : "   Ходят Нолики!"));
+    Console.WriteLine(tab + (whoseturn ? "  Ходят Крестики!" : "   Ходят Нолики!"));
     KeyPressed(Console.ReadKey(), gamecage, tictac);
     PrintGameBoard(gamecage);
     win =  (gamecage[7] !=' ' && gamecage[7] == gamecage[8] && gamecage[7] == gamecage[9] ||
@@ -109,11 +96,12 @@ while (!win && turn != 9)
             gamecage[1] !=' ' && gamecage[1] == gamecage[5] && gamecage[1] == gamecage[9]);
     string boardZ = new string(gamecage);
     turn = (boardA == boardZ ? turn : ++turn);
-    wturn = turn % 2 == 0;
-    tictac = (wturn ? 'X' : 'O');
+    whoseturn = turn % 2 == 0;
+    tictac = (whoseturn ? 'X' : 'O');
 };
+
 Console.WriteLine();
 Console.Write(tab);
-if (win && turn <= 9) Console.WriteLine(wturn ? " Нолики победили!!" : "Крестики победили!!");
+if (win && turn <= 9) Console.WriteLine(whoseturn ? " Нолики победили!!" : "Крестики победили!!");
 else Console.WriteLine("   Боевая ничья!");
 Console.WriteLine();
