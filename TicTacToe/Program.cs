@@ -20,43 +20,43 @@ void Welcome() //выводит правила игры и ждет нажати
     Console.ReadKey();  //ожидает нажатия любой клавиши
 }
 ///////////
-bool PazzleXO()
-{
+bool PazzleXO()   // представляется Пазлом, предлагает сыграть в чет/нечет, что бы решить кто играет крестиками, и возвращает 
+{                 // результат в зависимости от удачи игрока: возвращает true, если крестики выпали Пазлу, иначе false 
     Console.Clear();
-    bool ArrowRLPressed = true;
-    bool choiceXO = true;
-    bool userChoice = true;
-    int random = new Random().Next(1, 101);
-    bool pazleChoice = random % 2 == 0;
+    bool ArrowRLPress = true;   // определяет нажата ли стрелка вправо/влево
+    bool choiceXO = true;         // определяет значение, которое вернется функции
+    bool userChoice = true;     // хранит выбор игрока
+    int random = new Random().Next(1, 101);     // случайное число от 1 до 100
+    bool pazleChoice = random % 2 == 0;       // проверяет четное ли random и сохраняет результат, как выбор Пазла
     Console.WriteLine();
-    Console.WriteLine("     Привет! Меня зовут Пазл! И со мной ты будешь играть!");
+    Console.WriteLine("         Привет! Меня зовут Пазл! И со мной ты будешь играть!");
     Console.WriteLine("     Для начала давай решим кто играет крестиками и ходит первым.");
     Console.WriteLine("     Я загадываю число от 1 до 100, а ты попробуешь угадать четное оно или нет:");
     Console.WriteLine();
     Console.WriteLine("        ЧЕТ <== [стрелка влево]    или    [стрелка вправо]  ==> НЕЧЕТ");
     Console.WriteLine();
-    while (ArrowRLPressed)
+    while (ArrowRLPress)        // выполнять пока не нажата стрелка вправо/влево
     {
-        ConsoleKey answer = Console.ReadKey(false).Key;
-        if (answer == ConsoleKey.LeftArrow || answer == ConsoleKey.RightArrow)
+        ConsoleKey whatKey = Console.ReadKey(true).Key;             // сохраняет в whatKey какая клавиша была нажата
+        if (whatKey == ConsoleKey.LeftArrow || whatKey == ConsoleKey.RightArrow)  // если нажата стрелка вправо или стрелка влево
         {
-            userChoice = (answer == ConsoleKey.LeftArrow ? true : false);
-            ArrowRLPressed = false;
+            userChoice = (whatKey == ConsoleKey.LeftArrow ? true : false); // записать в userChoice true если был выбран ЧЕТ, иначе false
+            ArrowRLPress = false;       // стрелка нажата - выходим из цикла
         }
     }
-    if (userChoice == pazleChoice)
+    if (userChoice == pazleChoice)  // если игрок угадал что было "загадано" Пазлом
     {
-        Console.WriteLine($"    Угадал! Я загадывал - {random}. Ты играешь крестиками и ходишь первым.");
-        choiceXO = false;
+        Console.WriteLine($"    Угадал! Я загадывал - {random}. Ты играешь крестиками и ходишь первым."); 
+        choiceXO = false; // функции вернется false
     }
-    else
+    else // иначе значение в choiceXO останется true
     {
         Console.WriteLine($"    Не угадал! Я загадывал - {random}. Крестиками играю я! ");
     }
     Console.WriteLine();
     Console.WriteLine("     Если готов начинать - нажми любую клавишу.");
-    Console.ReadKey();
-    return choiceXO;
+    Console.ReadKey();          // ожидает нажатия любой клавиши
+    return choiceXO;        //возвращает значение функции
 };
 ///////////
 void PrintGameBoard(char[] cell)  //перерисовывает игровое поле с учетом изменений содержимого клеток(cell)
@@ -80,43 +80,43 @@ void PrintGameBoard(char[] cell)  //перерисовывает игровое 
     }
 }
 ///////////
-bool FullLine(char[] cell, char checkSign, char changeSign)
-{
-    bool full = false;
-    string boardA = new string(cell);
-    if (cell[5] == checkSign && cell[1] == checkSign && cell[9] == ' ') cell[9] = changeSign;
-    else if (cell[5] == checkSign && cell[2] == checkSign && cell[8] == ' ') cell[8] = changeSign;
-    else if (cell[5] == checkSign && cell[3] == checkSign && cell[7] == ' ') cell[7] = changeSign;
-    else if (cell[5] == checkSign && cell[4] == checkSign && cell[6] == ' ') cell[6] = changeSign;
-    else if (cell[5] == checkSign && cell[6] == checkSign && cell[4] == ' ') cell[4] = changeSign;
-    else if (cell[5] == checkSign && cell[7] == checkSign && cell[3] == ' ') cell[3] = changeSign;
-    else if (cell[5] == checkSign && cell[8] == checkSign && cell[2] == ' ') cell[2] = changeSign;
-    else if (cell[5] == checkSign && cell[9] == checkSign && cell[1] == ' ') cell[1] = changeSign;
-    else if (cell[7] == checkSign && cell[8] == checkSign && cell[9] == ' ') cell[9] = changeSign;
-    else if (cell[7] == checkSign && cell[9] == checkSign && cell[8] == ' ') cell[8] = changeSign;
-    else if (cell[7] == checkSign && cell[4] == checkSign && cell[1] == ' ') cell[1] = changeSign;
-    else if (cell[7] == checkSign && cell[1] == checkSign && cell[4] == ' ') cell[4] = changeSign;
-    else if (cell[4] == checkSign && cell[1] == checkSign && cell[7] == ' ') cell[7] = changeSign;
-    else if (cell[8] == checkSign && cell[9] == checkSign && cell[7] == ' ') cell[7] = changeSign;
-    else if (cell[3] == checkSign && cell[1] == checkSign && cell[2] == ' ') cell[2] = changeSign;
-    else if (cell[3] == checkSign && cell[2] == checkSign && cell[1] == ' ') cell[1] = changeSign;
-    else if (cell[3] == checkSign && cell[6] == checkSign && cell[9] == ' ') cell[9] = changeSign;
-    else if (cell[3] == checkSign && cell[9] == checkSign && cell[6] == ' ') cell[6] = changeSign;
-    else if (cell[2] == checkSign && cell[1] == checkSign && cell[3] == ' ') cell[3] = changeSign;
-    else if (cell[6] == checkSign && cell[9] == checkSign && cell[3] == ' ') cell[3] = changeSign;
-    string boardZ = new string(cell);
-    full = (boardA != boardZ);
-    return full;
+bool FullLine(char[] cell, char checkSign, char pastSigh) // проверяет есть ли на игровом поле cell линии с двумя клетками  
+{                                       // с символами checkSign и одной пустой, и найдя записывает в пустую pastSigh
+    bool full = false; // проверяет была ли заполнена линия
+    string boardA = new string(cell); // слепок игрового поля до начала проверки
+    if (cell[5] == checkSign && cell[1] == checkSign && cell[9] == ' ') cell[9] = pastSigh;
+    else if (cell[5] == checkSign && cell[2] == checkSign && cell[8] == ' ') cell[8] = pastSigh;
+    else if (cell[5] == checkSign && cell[3] == checkSign && cell[7] == ' ') cell[7] = pastSigh;
+    else if (cell[5] == checkSign && cell[4] == checkSign && cell[6] == ' ') cell[6] = pastSigh;
+    else if (cell[5] == checkSign && cell[6] == checkSign && cell[4] == ' ') cell[4] = pastSigh;
+    else if (cell[5] == checkSign && cell[7] == checkSign && cell[3] == ' ') cell[3] = pastSigh;
+    else if (cell[5] == checkSign && cell[8] == checkSign && cell[2] == ' ') cell[2] = pastSigh;
+    else if (cell[5] == checkSign && cell[9] == checkSign && cell[1] == ' ') cell[1] = pastSigh;
+    else if (cell[7] == checkSign && cell[8] == checkSign && cell[9] == ' ') cell[9] = pastSigh;
+    else if (cell[7] == checkSign && cell[9] == checkSign && cell[8] == ' ') cell[8] = pastSigh;
+    else if (cell[7] == checkSign && cell[4] == checkSign && cell[1] == ' ') cell[1] = pastSigh;
+    else if (cell[7] == checkSign && cell[1] == checkSign && cell[4] == ' ') cell[4] = pastSigh;
+    else if (cell[4] == checkSign && cell[1] == checkSign && cell[7] == ' ') cell[7] = pastSigh;
+    else if (cell[8] == checkSign && cell[9] == checkSign && cell[7] == ' ') cell[7] = pastSigh;
+    else if (cell[3] == checkSign && cell[1] == checkSign && cell[2] == ' ') cell[2] = pastSigh;
+    else if (cell[3] == checkSign && cell[2] == checkSign && cell[1] == ' ') cell[1] = pastSigh;
+    else if (cell[3] == checkSign && cell[6] == checkSign && cell[9] == ' ') cell[9] = pastSigh;
+    else if (cell[3] == checkSign && cell[9] == checkSign && cell[6] == ' ') cell[6] = pastSigh;
+    else if (cell[2] == checkSign && cell[1] == checkSign && cell[3] == ' ') cell[3] = pastSigh;
+    else if (cell[6] == checkSign && cell[9] == checkSign && cell[3] == ' ') cell[3] = pastSigh;
+    string boardZ = new string(cell);   // слепок игрового поля после проверки
+    full = (boardA != boardZ);      // если изменения есть, то true
+    return full;                // возвращает значение функции
 }
 ///////////
-void PazleKeyPressed(char[] cell, char pazzleSign)
+void PazleKeyPressed(char[] cell, char pazzleSign) // делает ход Пазла
 {
-    Thread.Sleep(700);
-    char userSign = (pazzleSign == 'X' ? 'O' : 'X');
-    if (cell[5] == ' ') cell[5] = pazzleSign;
-    else if (FullLine(cell, pazzleSign, pazzleSign)) return;
-    else if (FullLine(cell, userSign, pazzleSign)) return;
-    else if (cell[7] == ' ') cell[7] = pazzleSign;
+    Thread.Sleep(700);          // задержка перед ходом в 0.7 сек.
+    char userSign = (pazzleSign == 'X' ? 'O' : 'X');    // записывает знак игрока, противоположный знаку Пазла
+    if (cell[5] == ' ') cell[5] = pazzleSign;       // если центральная клетка свободна, то Пазл ее занимает
+    else if (FullLine(cell, pazzleSign, pazzleSign)) return;   // если может выиграть(Х/ /Х) - выигрывает(Х/Х/Х)
+    else if (FullLine(cell, userSign, pazzleSign)) return;   //если может не дать выиграть(О/ /О) - не дает выиграть(О/Х/О)
+    else if (cell[7] == ' ') cell[7] = pazzleSign;        // иначе проверяет свободные клетки и делает ход туда...
     else if (cell[9] == ' ') cell[9] = pazzleSign;
     else if (cell[1] == ' ') cell[1] = pazzleSign;
     else if (cell[3] == ' ') cell[3] = pazzleSign;
@@ -177,21 +177,21 @@ bool Win(char[] cell) // возвращает true, если выпала выи
 char[] gameCells = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }; //начальные значения игровых клеток(пустые)
 char ticTac = 'X';      //значение записываемое в игровые клетки во время хода
 int turn = 0;         //счетчик ходов
-bool whoseTurn = true;  //определяет кто ходит
+bool whoseTurn = true;  //определяет кто ходит - крестики или нолики
 string tab = "                                                    ";    //отступ, что б поле было в центре экрана
 Welcome();                //выводит правила игры
-bool pazzleX = PazzleXO();
-bool pazzleTurn = true;  
+bool pazzleX = PazzleXO(); //знакомство с Пазлом, выбор чем играть(Х/О) и запись выбора в pazzleX
+bool pazzleTurn = true;  //true, если ход Пазла
 PrintGameBoard(gameCells);   //рисует пустое игровое поле
 while (!Win(gameCells) && turn < 9) //выполнять пока не выпадет выигрыш и пока сделано менее 9 ходов
 {
     Console.WriteLine();
-    pazzleTurn = (pazzleX ? whoseTurn : !whoseTurn);
+    pazzleTurn = (pazzleX ? whoseTurn : !whoseTurn); //если Пазл играет крестиками, то pazzleTurn равен whoseTurn, иначе противоположен
     Console.WriteLine(tab + (whoseTurn ? "  Ходят Крестики!" : "   Ходят Нолики!"));  //объявляет чей ход
-    string boardA = new string(gameCells);               //запоминает значения клеток до нажатия клавиши
-    if (pazzleTurn) PazleKeyPressed(gameCells, ticTac);
-    else UserKeyPressed(Console.ReadKey().Key, gameCells, ticTac);  //ждет нажатия клавиши, если нажата 1..9 изменяет значение на ticTac в соответствующей клетке(gameCells)
-    string boardZ = new string(gameCells);               //запоминает значения клеток после нажатия клавиши
+    string boardA = new string(gameCells);               //запоминает значения клеток до хода
+    if (pazzleTurn) PazleKeyPressed(gameCells, ticTac); // если ход Пазла, то изменяет значение на ticTac в соответствующей клетке(gameCells)
+    else UserKeyPressed(Console.ReadKey().Key, gameCells, ticTac);  //иначе ждет нажатия клавиши игроком, и если нажата 1..9 изменяет значение на ticTac в соответствующей клетке(gameCells)
+    string boardZ = new string(gameCells);               //запоминает значения клеток после хода
     PrintGameBoard(gameCells);                         //обновляет игровое поле
     Win(gameCells);                                      //проверяет не выпала ли выигрышная комбинация
     turn = (boardA == boardZ ? turn : ++turn);        //если игровое поле изменилось то увеличивает счетчик на 1
@@ -199,8 +199,8 @@ while (!Win(gameCells) && turn < 9) //выполнять пока не выпа�
     ticTac = (whoseTurn ? 'X' : 'O');                   //Х - если четный ход, О - если нечетный
 };
 Console.WriteLine();
-if (Win(gameCells)) Console.WriteLine(tab + (pazzleTurn ? " Пазл - мегакрут!!" : "    Поздравляю("));
-if (Win(gameCells)) Console.WriteLine(tab + (whoseTurn ? " Нолики победили!!" : "Крестики победили!!")); //если выпал выигрыш то объявляет победителя
+if (Win(gameCells)) Console.WriteLine(tab + (pazzleTurn ? " Пазл - мегакрут!!" : "    Поздравляю(")); //если выпал выигрыш, Пазл либо хвастается либо поздраляет
+if (Win(gameCells)) Console.WriteLine(tab + (whoseTurn ? " Нолики победили!!" : "Крестики победили!!")); //если выпал выигрыш то объявляет знак победителя
 else Console.WriteLine(tab + "   Боевая ничья!");                                                 //иначе ничья
 Console.WriteLine();
 
