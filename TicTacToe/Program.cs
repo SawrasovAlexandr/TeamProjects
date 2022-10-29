@@ -56,19 +56,19 @@ void Welcome() //выводит правила игры и ждет нажати
 //     return choiceXO;
 // };
 ///////////
-void PrintGameBoard(char[] cage)  //перерисовывает игровое поле с учетом изменений содержимого клеток(cage)
+void PrintGameBoard(char[] cell)  //перерисовывает игровое поле с учетом изменений содержимого клеток(cell)
 {
     Console.Clear();
     string tab = "                                                    "; //отступ, что б поле было в центре экрана
     string[] gameboard = {  " _________________ ",              //0
                             "|     |     |     |",              //1
-                $"|  {cage[7]}  |  {cage[8]}  |  {cage[9]}  |", //2     в центр ячеек игрового поля
+                $"|  {cell[7]}  |  {cell[8]}  |  {cell[9]}  |", //2     в центр ячеек игрового поля
                             "|_____|_____|_____|",              //3     записываются значения из
-                            "|     |     |     |",              //4     массива cage
-                $"|  {cage[4]}  |  {cage[5]}  |  {cage[6]}  |", //5
+                            "|     |     |     |",              //4     массива cell
+                $"|  {cell[4]}  |  {cell[5]}  |  {cell[6]}  |", //5
                             "|_____|_____|_____|",              //6
                             "|     |     |     |",              //7
-                $"|  {cage[1]}  |  {cage[2]}  |  {cage[3]}  |", //8
+                $"|  {cell[1]}  |  {cell[2]}  |  {cell[3]}  |", //8
                             "|_____|_____|_____|"};             //9
     Console.WriteLine();
     for (int i = 0; i < 10; i++)
@@ -77,146 +77,124 @@ void PrintGameBoard(char[] cage)  //перерисовывает игровое 
     }
 }
 ///////////
-void PazleKeyPressed(char[] cage, char symbol)
+bool FullLine(char[] cell, char checkSign, char changeSign)
 {
-    char antiSymbol = (symbol == 'X' ? 'O' : 'X');
-    if (cage[5] == symbol)
-    {
-        if (cage[1] == symbol && cage[9] == ' ') cage[9] = symbol;
-        else if (cage[2] == symbol && cage[8] == ' ') cage[8] = symbol;
-        else if (cage[3] == symbol && cage[7] == ' ') cage[7] = symbol;
-        else if (cage[4] == symbol && cage[6] == ' ') cage[6] = symbol;
-        else if (cage[6] == symbol && cage[4] == ' ') cage[4] = symbol;
-        else if (cage[7] == symbol && cage[3] == ' ') cage[3] = symbol;
-        else if (cage[8] == symbol && cage[2] == ' ') cage[2] = symbol;
-        else if (cage[9] == symbol && cage[1] == ' ') cage[1] = symbol;
-    }
-    else if (cage[7] == symbol)
-    {
-        if (cage[8] == symbol && cage[9] == ' ') cage[9] = symbol;
-        else if (cage[9] == symbol && cage[8] == ' ') cage[8] = symbol;
-        else if (cage[4] == symbol && cage[1] == ' ') cage[1] = symbol;
-        else if (cage[1] == symbol && cage[4] == ' ') cage[4] = symbol;
-    }
-    else if (cage[4] == symbol && cage[1] == symbol && cage[7] == ' ') cage[7] = symbol;
-    else if (cage[8] == symbol && cage[9] == symbol && cage[7] == ' ') cage[7] = symbol;
-    else if (cage[3] == symbol)
-    {
-        if (cage[1] == symbol && cage[2] == ' ') cage[2] = symbol;
-        else if (cage[2] == symbol && cage[1] == ' ') cage[1] = symbol;
-        else if (cage[6] == symbol && cage[9] == ' ') cage[9] = symbol;
-        else if (cage[9] == symbol && cage[6] == ' ') cage[6] = symbol;
-    }
-    else if (cage[2] == symbol && cage[1] == symbol && cage[3] == ' ') cage[3] = symbol;
-    else if (cage[6] == symbol && cage[9] == symbol && cage[3] == ' ') cage[3] = symbol;
+    bool full = false;
+    string boardA = new string(cell);
 
-    if (cage[5] == antiSymbol)
-    {
-        if (cage[1] == antiSymbol && cage[9] == ' ') cage[9] = symbol;
-        else if (cage[2] == antiSymbol && cage[8] == ' ') cage[8] = symbol;
-        else if (cage[3] == antiSymbol && cage[7] == ' ') cage[7] = symbol;
-        else if (cage[4] == antiSymbol && cage[6] == ' ') cage[6] = symbol;
-        else if (cage[6] == antiSymbol && cage[4] == ' ') cage[4] = symbol;
-        else if (cage[7] == antiSymbol && cage[3] == ' ') cage[3] = symbol;
-        else if (cage[8] == antiSymbol && cage[2] == ' ') cage[2] = symbol;
-        else if (cage[9] == antiSymbol && cage[1] == ' ') cage[1] = symbol;
-    }
-    else if (cage[7] == antiSymbol)
-    {
-        if (cage[8] == antiSymbol && cage[9] == ' ') cage[9] = symbol;
-        else if (cage[9] == antiSymbol && cage[8] == ' ') cage[8] = symbol;
-        else if (cage[4] == antiSymbol && cage[1] == ' ') cage[1] = symbol;
-        else if (cage[1] == antiSymbol && cage[4] == ' ') cage[4] = symbol;
-    }
-    else if (cage[4] == antiSymbol && cage[1] == antiSymbol && cage[7] == ' ') cage[7] = symbol;
-    else if (cage[8] == antiSymbol && cage[9] == antiSymbol && cage[7] == ' ') cage[7] = symbol;
-    else if (cage[3] == antiSymbol)
-    {
-        if (cage[1] == antiSymbol && cage[2] == ' ') cage[2] = symbol;
-        else if (cage[2] == antiSymbol && cage[1] == ' ') cage[1] = symbol;
-        else if (cage[6] == antiSymbol && cage[9] == ' ') cage[9] = symbol;
-        else if (cage[9] == antiSymbol && cage[6] == ' ') cage[6] = symbol;
-    }
-    else if (cage[2] == antiSymbol && cage[1] == antiSymbol && cage[3] == ' ') cage[3] = symbol;
-    else if (cage[6] == antiSymbol && cage[9] == antiSymbol && cage[3] == ' ') cage[3] = symbol;
+    if (cell[5] == checkSign && cell[1] == checkSign && cell[9] == ' ') cell[9] = changeSign;
+    else if (cell[5] == checkSign && cell[2] == checkSign && cell[8] == ' ') cell[8] = changeSign;
+    else if (cell[5] == checkSign && cell[3] == checkSign && cell[7] == ' ') cell[7] = changeSign;
+    else if (cell[5] == checkSign && cell[4] == checkSign && cell[6] == ' ') cell[6] = changeSign;
+    else if (cell[5] == checkSign && cell[6] == checkSign && cell[4] == ' ') cell[4] = changeSign;
+    else if (cell[5] == checkSign && cell[7] == checkSign && cell[3] == ' ') cell[3] = changeSign;
+    else if (cell[5] == checkSign && cell[8] == checkSign && cell[2] == ' ') cell[2] = changeSign;
+    else if (cell[5] == checkSign && cell[9] == checkSign && cell[1] == ' ') cell[1] = changeSign;
 
-    else if (cage[5] == ' ') cage[5] = symbol;
-    else if (cage[7] == ' ') cage[7] = symbol;
-    else if (cage[9] == ' ') cage[9] = symbol;
-    else if (cage[3] == ' ') cage[3] = symbol;
-    else if (cage[1] == ' ') cage[1] = symbol;
-    else if (cage[8] == ' ') cage[8] = symbol;
-    else if (cage[6] == ' ') cage[6] = symbol;
-    else if (cage[2] == ' ') cage[2] = symbol;
-    else cage[4] = symbol;
-    
+    else if (cell[7] == checkSign && cell[8] == checkSign && cell[9] == ' ') cell[9] = changeSign;
+    else if (cell[7] == checkSign && cell[9] == checkSign && cell[8] == ' ') cell[8] = changeSign;
+    else if (cell[7] == checkSign && cell[4] == checkSign && cell[1] == ' ') cell[1] = changeSign;
+    else if (cell[7] == checkSign && cell[1] == checkSign && cell[4] == ' ') cell[4] = changeSign;
+    else if (cell[4] == checkSign && cell[1] == checkSign && cell[7] == ' ') cell[7] = changeSign;
+    else if (cell[8] == checkSign && cell[9] == checkSign && cell[7] == ' ') cell[7] = changeSign;
+
+    else if (cell[3] == checkSign && cell[1] == checkSign && cell[2] == ' ') cell[2] = changeSign;
+    else if (cell[3] == checkSign && cell[2] == checkSign && cell[1] == ' ') cell[1] = changeSign;
+    else if (cell[3] == checkSign && cell[6] == checkSign && cell[9] == ' ') cell[9] = changeSign;
+    else if (cell[3] == checkSign && cell[9] == checkSign && cell[6] == ' ') cell[6] = changeSign;
+    else if (cell[2] == checkSign && cell[1] == checkSign && cell[3] == ' ') cell[3] = changeSign;
+    else if (cell[6] == checkSign && cell[9] == checkSign && cell[3] == ' ') cell[3] = changeSign;
+    string boardZ = new string(cell);
+    full = (boardA != boardZ);
+    return full;
+}
+///////////
+void PazleKeyPressed(char[] cell, char pazzleSign)
+{
+    char userSign = (pazzleSign == 'X' ? 'O' : 'X');
+
+    if (cell[5] == ' ') cell[5] = pazzleSign;
+
+    else if (FullLine(cell, pazzleSign, pazzleSign)) return;
+    else if (FullLine(cell, userSign, pazzleSign)) return;
+
+
+    else if (cell[7] == ' ') cell[7] = pazzleSign;
+    else if (cell[4] == ' ') cell[4] = pazzleSign;
+    else if (cell[1] == ' ') cell[1] = pazzleSign;
+    else if (cell[3] == ' ') cell[3] = pazzleSign;
+    else if (cell[8] == ' ') cell[8] = pazzleSign;
+    else if (cell[6] == ' ') cell[6] = pazzleSign;
+    else if (cell[2] == ' ') cell[2] = pazzleSign;
+    else if (cell[9] == ' ') cell[9] = pazzleSign;
+    return;
 };
 ///////////
-void UserKeyPressed(ConsoleKey key, char[] cage, char symbol) //если нажата клавиша 1..9 та записывает значение Х или О(symbol) в 
-{                                                           //соответствующую клетку(cage)
+void UserKeyPressed(ConsoleKey key, char[] cell, char checkSign) //если нажата клавиша 1..9 та записывает значение Х или О(checkSign) в 
+{                                                           //соответствующую клетку(cell)
     switch (key)
     {
         case ConsoleKey.D1:                     //если нажата 1
-            if (cage[1] == ' ') cage[1] = symbol; //если в первой клетке пробел(она пуста) то туда записывает Х или О
+            if (cell[1] == ' ') cell[1] = checkSign; //если в первой клетке пробел(она пуста) то туда записывает Х или О
             break;
         case ConsoleKey.D2:                     //и т.д.
-            if (cage[2] == ' ') cage[2] = symbol;
+            if (cell[2] == ' ') cell[2] = checkSign;
             break;
         case ConsoleKey.D3:
-            if (cage[3] == ' ') cage[3] = symbol;
+            if (cell[3] == ' ') cell[3] = checkSign;
             break;
         case ConsoleKey.D4:
-            if (cage[4] == ' ') cage[4] = symbol;
+            if (cell[4] == ' ') cell[4] = checkSign;
             break;
         case ConsoleKey.D5:
-            if (cage[5] == ' ') cage[5] = symbol;
+            if (cell[5] == ' ') cell[5] = checkSign;
             break;
         case ConsoleKey.D6:
-            if (cage[6] == ' ') cage[6] = symbol;
+            if (cell[6] == ' ') cell[6] = checkSign;
             break;
         case ConsoleKey.D7:
-            if (cage[7] == ' ') cage[7] = symbol;
+            if (cell[7] == ' ') cell[7] = checkSign;
             break;
         case ConsoleKey.D8:
-            if (cage[8] == ' ') cage[8] = symbol;
+            if (cell[8] == ' ') cell[8] = checkSign;
             break;
         case ConsoleKey.D9:
-            if (cage[9] == ' ') cage[9] = symbol;
+            if (cell[9] == ' ') cell[9] = checkSign;
             break;
     }
 }
 ///////////
-bool Win(char[] cage) // возвращает true, если выпала выиграшная комбинация
+bool Win(char[] cell) // возвращает true, если выпала выиграшная комбинация
 {                                                                               //если в клетке 7 не пробел(а Х или О) и ее содержимое 
-    bool winRow = cage[7] != ' ' && cage[7] == cage[8] && cage[7] == cage[9] ||   //равно клетке 8 и 9(верхний горизонтальный ряд)
-                cage[4] != ' ' && cage[4] == cage[5] && cage[4] == cage[6] ||     //средний горизонтальный
-                cage[1] != ' ' && cage[1] == cage[2] && cage[1] == cage[3] ||   //нижний горизонтальный
-                cage[7] != ' ' && cage[7] == cage[4] && cage[7] == cage[1] ||     //левый вертикальный
-                cage[8] != ' ' && cage[8] == cage[5] && cage[8] == cage[2] ||   //средний вертикальный
-                cage[9] != ' ' && cage[9] == cage[6] && cage[9] == cage[3] ||     //правый вертикальный
-                cage[7] != ' ' && cage[7] == cage[5] && cage[7] == cage[3] ||   //диагональный\
-                cage[1] != ' ' && cage[1] == cage[5] && cage[1] == cage[9];       //другой диагональный/
-    return winRow;
+    bool winLine = cell[7] != ' ' && cell[7] == cell[8] && cell[7] == cell[9] ||   //равно клетке 8 и 9(верхний горизонтальный ряд)
+                cell[4] != ' ' && cell[4] == cell[5] && cell[4] == cell[6] ||     //средний горизонтальный
+                cell[1] != ' ' && cell[1] == cell[2] && cell[1] == cell[3] ||   //нижний горизонтальный
+                cell[7] != ' ' && cell[7] == cell[4] && cell[7] == cell[1] ||     //левый вертикальный
+                cell[8] != ' ' && cell[8] == cell[5] && cell[8] == cell[2] ||   //средний вертикальный
+                cell[9] != ' ' && cell[9] == cell[6] && cell[9] == cell[3] ||     //правый вертикальный
+                cell[7] != ' ' && cell[7] == cell[5] && cell[7] == cell[3] ||   //диагональный\
+                cell[1] != ' ' && cell[1] == cell[5] && cell[1] == cell[9];       //другой диагональный/
+    return winLine;
 }
 ///////////// начало программы
-char[] gameCage = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }; //начальные значения игровых клеток(пустые)
+char[] gameCells = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }; //начальные значения игровых клеток(пустые)
 char ticTac = 'X';      //значение записываемое в игровые клетки во время хода
 int turn = 0;         //счетчик ходов
 bool whoseTurn = true;  //определяет кто ходит
 string tab = "                                                    ";    //отступ, что б поле было в центре экрана
 Welcome();                //выводит правила игры
 // bool whose = PazleXO();  
-PrintGameBoard(gameCage);   //рисует пустое игровое поле
-while (!Win(gameCage) && turn < 9) //выполнять пока не выпадет выигрыш и пока сделано менее 9 ходов
+PrintGameBoard(gameCells);   //рисует пустое игровое поле
+while (!Win(gameCells) && turn < 9) //выполнять пока не выпадет выигрыш и пока сделано менее 9 ходов
 {
     Console.WriteLine();
     Console.WriteLine(tab + (whoseTurn ? "  Ходят Крестики!" : "   Ходят Нолики!"));  //объявляет чей ход
-    string boardA = new string(gameCage);               //запоминает значения клеток до нажатия клавиши
-    if (whoseTurn) PazleKeyPressed(gameCage, ticTac);
-    else UserKeyPressed(Console.ReadKey().Key, gameCage, ticTac);  //ждет нажатия клавиши, если нажата 1..9 изменяет значение на ticTac в соответствующей клетке(gameCage)
-    string boardZ = new string(gameCage);               //запоминает значения клеток после нажатия клавиши
-    PrintGameBoard(gameCage);                         //обновляет игровое поле
-    Win(gameCage);                                      //проверяет не выпала ли выигрышная комбинация
+    string boardA = new string(gameCells);               //запоминает значения клеток до нажатия клавиши
+    if (whoseTurn) PazleKeyPressed(gameCells, ticTac);
+    else UserKeyPressed(Console.ReadKey().Key, gameCells, ticTac);  //ждет нажатия клавиши, если нажата 1..9 изменяет значение на ticTac в соответствующей клетке(gameCells)
+    string boardZ = new string(gameCells);               //запоминает значения клеток после нажатия клавиши
+    PrintGameBoard(gameCells);                         //обновляет игровое поле
+    Win(gameCells);                                      //проверяет не выпала ли выигрышная комбинация
     turn = (boardA == boardZ ? turn : ++turn);        //если игровое поле изменилось то увеличивает счетчик на 1
     whoseTurn = (turn % 2 == 0);                          //если ход четный возвращает true
     ticTac = (whoseTurn ? 'X' : 'O');                   //Х - если четный ход, О - если нечетный
@@ -224,7 +202,7 @@ while (!Win(gameCage) && turn < 9) //выполнять пока не выпад
 };
 Console.WriteLine();
 Console.Write(tab);
-if (Win(gameCage)) Console.WriteLine(whoseTurn ? " Нолики победили!!" : "Крестики победили!!"); //если выпал выигрыш то объявляет победителя
+if (Win(gameCells)) Console.WriteLine(whoseTurn ? " Нолики победили!!" : "Крестики победили!!"); //если выпал выигрыш то объявляет победителя
 else Console.WriteLine("   Боевая ничья!");                                                 //иначе ничья
 Console.WriteLine();
 
