@@ -92,6 +92,10 @@ bool FullLine(char[] cell, char checkSign, char pasteSigh) // проверяет
     else if (cell[5] == checkSign && cell[7] == checkSign && cell[3] == ' ') cell[3] = pasteSigh;
     else if (cell[5] == checkSign && cell[8] == checkSign && cell[2] == ' ') cell[2] = pasteSigh;
     else if (cell[5] == checkSign && cell[9] == checkSign && cell[1] == ' ') cell[1] = pasteSigh;
+    else if (cell[7] == checkSign && cell[3] == checkSign && cell[5] == ' ') cell[5] = pasteSigh;
+    else if (cell[1] == checkSign && cell[9] == checkSign && cell[5] == ' ') cell[5] = pasteSigh;
+    else if (cell[4] == checkSign && cell[6] == checkSign && cell[5] == ' ') cell[5] = pasteSigh;
+    else if (cell[2] == checkSign && cell[8] == checkSign && cell[5] == ' ') cell[5] = pasteSigh;
     else if (cell[7] == checkSign && cell[8] == checkSign && cell[9] == ' ') cell[9] = pasteSigh;
     else if (cell[7] == checkSign && cell[9] == checkSign && cell[8] == ' ') cell[8] = pasteSigh;
     else if (cell[7] == checkSign && cell[4] == checkSign && cell[1] == ' ') cell[1] = pasteSigh;
